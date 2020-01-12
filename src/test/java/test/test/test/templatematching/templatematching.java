@@ -27,7 +27,7 @@ public class templatematching {
 		String env = "C:/Users/ds/Downloads/platform-tools/";
 		String mainFilePath="C:\\img\\";
 		String subFilePath="C:\\img\\sub\\";
-
+		File f = new File(subFilePath);
 
 
 		if(OS.indexOf("linux")>=0 || (OS.indexOf("mac")>=0&&OS.indexOf("os")>0)){
@@ -43,19 +43,18 @@ public class templatematching {
 
 		while (true) {
 
-			int slayers_stack = 0;
+			//int slayers_stack = 0;
 			ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true);
 			pb.command("cmd.exe", "/c" , env+"adb exec-out screencap -p > c:\\img\\screen.png");
 			pb.start();
 
 			Thread.sleep(1000);
 
-
-			for (File info : FileUtils.listFiles(new File(subFilePath), TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
-
-				final Mat source = Imgcodecs.imread(mainFilePath+"screen.png");
+			Mat source = Imgcodecs.imread(mainFilePath+"screen.png");
+			
+			for (File info : FileUtils.listFiles(f, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE)) {
 				final Mat template = Imgcodecs.imread(subFilePath+info.getName());
-				Mat outputImage=new Mat();   
+				Mat outputImage = new Mat();   
 
 				for (int i=0; i<1; i++) {
 					//Template matching method
@@ -70,7 +69,7 @@ public class templatematching {
 
 						System.out.println(info.getName());
 
-						pb = new ProcessBuilder().redirectErrorStream(true);
+						//pb = new ProcessBuilder().redirectErrorStream(true);
 
 
 						switch (info.getName()) { 
@@ -196,6 +195,9 @@ public class templatematching {
 //							break;
 						}
 					}
+					
+					template.release();
+					outputImage.release();
 
 
 
@@ -214,6 +216,8 @@ public class templatematching {
 				//Imgcodecs.imwrite(mainFilePath+"test\\"+i+" : "+(info.getName().replace("\\.","")) +" sonuc.jpg", source);
 				//        System.out.println("Complated.");
 			}
+			
+			source.release();
 
 		}
 
