@@ -2,11 +2,11 @@ package test.test.test.pb;
 
 import java.io.IOException;
 
-public class Pbservice {
+public class PbServices {
 
 	private ProcessBuilder pb;
 
-	public Pbservice() {
+	public PbServices() {
 		this.pb = new ProcessBuilder().redirectErrorStream(true);
 	}
 		
