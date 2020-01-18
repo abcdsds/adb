@@ -22,7 +22,7 @@ import org.opencv.core.Mat;
 public class uitls{
 
 	
-	public JSONObject getJsonObject(String filePath) {
+	public static JSONObject getJsonObject(String filePath) {
 		try {
 			
 			JSONTokener jsonTokener = new JSONTokener(new FileReader(new File(filePath)));
@@ -34,7 +34,7 @@ public class uitls{
 		return null;
 	}
 	
-	public JSONArray getJsonArray(String filePath) {
+	public static JSONArray getJsonArray(String filePath) {
 		try {
 			
 			JSONTokener jsonTokener = new JSONTokener(new FileReader(new File(filePath)));

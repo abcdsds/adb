@@ -23,10 +23,8 @@ public class OpenCvService {
 	private String OS = System.getProperty("os.name").toLowerCase();
 	private Mat mainImg;
 	private Mat compareImg;
-	private Mat resultImg;
 	private MinMaxLocResult mmr;
-	private int x = -1;
-	private int y = -1;
+
 	
 
 	
@@ -39,20 +37,22 @@ public class OpenCvService {
 		}
 		
 		System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
+	
 	}
 	
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
 	
-	public boolean compare () {
-	
-		if (mmr.minVal < 10000000) {
+	public boolean compare (String mode , String location) {
+		
+		int compareX = mode.equals("veritical") ? (int)(mainImg.rows() - (mmr.minLoc.y+compareImg.rows())) : (int)(mmr.minLoc.x+compareImg.cols());
+		int compareY = mode.equals("veritical") ? (int)(mmr.minLoc.x+compareImg.cols()) : (int)(mmr.minLoc.y+compareImg.rows());
+		int locationX = Integer.parseInt(location.split(" ")[0]);
+		int locationY = Integer.parseInt(location.split(" ")[1]);
+		
+		System.out.println(compareX + " : " + locationX);
+		System.out.println(compareY + " : " + locationY);
+		
+		if (Math.abs(compareX - locationX) < 5  && Math.abs(compareY - locationY) < 5 ) {
+			
 			return true;
 		}
 		return false;
@@ -67,13 +67,28 @@ public class OpenCvService {
 	}
 	
 	public void calMmr(int method) {
+		Mat resultImg = new Mat();
 		Imgproc.matchTemplate(mainImg, compareImg, resultImg, method);
 		mmr = org.opencv.core.Core.minMaxLoc(resultImg);
+		resultImg.release();
+	}
+	
+	public Mat setMainImg(String file,int flags) {
+		mainImg = Imgcodecs.imread(file,flags);
+		System.out.println(mainImg.get(962, 107));
+		return mainImg;
 	}
 	
 	public Mat setMainImg(String file) {
+		System.out.println(file);
 		mainImg = Imgcodecs.imread(file);
+		System.out.println(mainImg.width());
 		return mainImg;
+	}
+	
+	public Mat setCompareImg(String file,int flags) {
+		compareImg = Imgcodecs.imread(file,flags);
+		return compareImg;
 	}
 	
 	public Mat setCompareImg(String file) {
@@ -81,10 +96,15 @@ public class OpenCvService {
 		return compareImg;
 	}
 	
-	public Mat setResultImg(String file) {
-		resultImg = Imgcodecs.imread(file);
-		return resultImg;
-	}
+//	public Mat setResultImg(String file,int flags) {
+//		resultImg = Imgcodecs.imread(file,flags);
+//		return resultImg;
+//	}
+//	
+//	public Mat setResultImg(String file) {
+//		resultImg = Imgcodecs.imread(file);
+//		return resultImg;
+//	}
 	
 	public void mainImageRelease() {
 		mainImg.release();
@@ -94,8 +114,14 @@ public class OpenCvService {
 		compareImg.release();
 	}
 	
-	public void resultImageRelease() {
-		resultImg.release();
+//	public void resultImageRelease() {
+//		resultImg.release();
+//	}
+	
+	public void ImagesRelease() {
+		mainImg.release();
+		compareImg.release();
+		//resultImg.release();
 	}
 	
 	
@@ -119,7 +145,7 @@ public class OpenCvService {
 	}
 	
 	
-	public JFrame CreateFrame(String name, Image img) {
+	public JFrame CreateFrame(String name, Image img , String mode) {
 		JFrame frame = new JFrame(name);
 		ImageIcon icon = new ImageIcon(img);
 		
@@ -135,10 +161,20 @@ public class OpenCvService {
 				// TODO Auto-generated method stub
 				//System.out.println(e.getX());
 				//System.out.println(e.getY());
-				x = e.getXOnScreen();
-				y = e.getYOnScreen();
-				System.out.println("X = " + e.getXOnScreen());
-				System.out.println("Y = " + e.getYOnScreen());
+//				x = e.getXOnScreen();
+//				y = e.getYOnScreen();
+				if (mode.equals("descild")) {
+					
+					System.out.println("X = " + (frame.getHeight() - e.getYOnScreen()));
+					System.out.println("Y = " + e.getXOnScreen());
+					
+				}else {
+					
+					System.out.println("X = " + e.getXOnScreen());
+					System.out.println("Y = " + e.getYOnScreen());
+					
+				}
+				
 			}
 
 			@Override
