@@ -62,7 +62,7 @@ public class templatematching {
 
 
 					MinMaxLocResult mmr = org.opencv.core.Core.minMaxLoc(outputImage);
-
+					
 					if (mmr.minVal < 10000000) {
 						//System.out.println("이미지 없음");
 						System.out.println(info.getName());
@@ -71,7 +71,7 @@ public class templatematching {
 						case "buy_complete_1.png":
 
 							break;
-
+ 
 						case "full.png":
 							pb.command("cmd.exe", "/c" , env+"adb shell input touchscreen tap 350 500");
 							pb.start();

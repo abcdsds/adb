@@ -1,7 +1,16 @@
 package test.test.test.opencv;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Core.MinMaxLocResult;
+import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -33,6 +42,14 @@ public class OpenCvService {
 			return true;
 		}
 		return false;
+	}
+	
+	public Mat getMainimageMat() {
+		return mainImg;
+	}
+	
+	public void showImage() {
+		HighGui.imshow("test", mainImg);
 	}
 	
 	public void calMmr(int method) {
