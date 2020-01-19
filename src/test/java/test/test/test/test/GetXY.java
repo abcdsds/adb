@@ -20,12 +20,14 @@ public class GetXY extends uitls{
 	private static String mainImgPath = "C:\\img\\screen2.png";
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 		String mode = "descild";
 		
 		adbCommand pb = new adbCommand();
 		pb.capture(mainImgPath);
+		
+		Thread.sleep(1000);
 		
 		OpenCvService openCvService = new OpenCvService();
 

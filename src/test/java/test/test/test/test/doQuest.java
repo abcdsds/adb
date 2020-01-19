@@ -24,7 +24,10 @@ public class doQuest extends uitls {
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 
-		doQuest2("adventure");
+		//doQuest2("adventure");
+		//doQuest2("hotSpa");
+		//doQuest2("dayDungeon");
+		doQuest2("reverse");
 
 	}
 
@@ -37,6 +40,7 @@ public class doQuest extends uitls {
 		Map<String, Object> dayDungeonClickXyMap = dayDungeonJo.getJSONObject("Clickxy").toMap();
 		Map<String, Object> dayDungeonCompareXyMap = dayDungeonJo.getJSONObject("Comparexy").toMap();
 		String questImgPath = defaultPath + dayDungeonJo.getString("defaultImgPath");
+		int quitMapSize = dayDungeonJo.getInt("quitMapSize");
 		File f = new File(questImgPath);
 		OpenCvService openCv = new OpenCvService();
 		adbCommand adb = new adbCommand();
@@ -60,26 +64,31 @@ public class doQuest extends uitls {
 				openCv.calMmr(0); // 0 이 가장 결과값이 좋음
 
 				
-				if (dayDungeonClickXyMap.size() < 5) {
+				if (dayDungeonClickXyMap.size() <= quitMapSize) {
 					Thread.sleep(1000);
-					adb.click(dayDungeonClickXyMap.get("adventureCancle").toString());
+					adb.click(dayDungeonClickXyMap.get(questNmae+"Cancel").toString());
 					checkWhile = false;
 					break;
 				}
 
 				if (dayDungeonCompareXyMap.containsKey(FilenameWithoutExtension)) {
 					if (openCv.compare("veritical",dayDungeonCompareXyMap.get(FilenameWithoutExtension).toString())) {
-						tempName = FilenameWithoutExtension;
+						//저장 시킬 키 이름  
+						//구역을 지워야 하기때문에 이름에 In 이 들어간것만 추가
+						if (FilenameWithoutExtension.indexOf("In") != -1) {
+							tempName = FilenameWithoutExtension;
+						}
 						System.out.println("Found = " + FilenameWithoutExtension);
 						adb.click(dayDungeonClickXyMap.get(FilenameWithoutExtension).toString());
-						if (FilenameWithoutExtension.equals("adventureCancle") && newSaveName.equals("adventureStart") == false) {
+						
+						if (FilenameWithoutExtension.equals(questNmae+"Cancel") && newSaveName.equals("adventureStart") == false) {
 							System.out.println(newSaveName + " 삭제");
 							dayDungeonCompareXyMap.remove(newSaveName);
 							dayDungeonClickXyMap.remove(newSaveName);
 						}
 						break;
 					} else {
-						System.out.println("not Found = " + FilenameWithoutExtension);
+						System.out.println("notFound = " + FilenameWithoutExtension);
 					}
 				}
 				System.out.println("현재 남은 크기 = " +dayDungeonClickXyMap.size());
@@ -92,7 +101,7 @@ public class doQuest extends uitls {
 
 		}
 
-		System.out.println("### 탐험 종료 ###");
+		System.out.println("### "+questNmae+" 종료 ###");
 
 	}
 

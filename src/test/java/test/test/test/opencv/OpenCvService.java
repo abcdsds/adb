@@ -51,7 +51,7 @@ public class OpenCvService {
 		System.out.println(compareX + " : " + locationX);
 		System.out.println(compareY + " : " + locationY);
 		
-		if (Math.abs(compareX - locationX) < 5  && Math.abs(compareY - locationY) < 5 ) {
+		if (Math.abs(compareX - locationX) <= 5  && Math.abs(compareY - locationY) <= 5 ) {
 			
 			return true;
 		}
