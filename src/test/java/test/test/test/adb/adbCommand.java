@@ -9,6 +9,16 @@ public class adbCommand {
 	
 	public adbCommand() {
 		this.pb = new ProcessBuilder().redirectErrorStream(true);
+		pb.command("cmd.exe", "/c" , env+"adb usb");
+		pb.command("cmd.exe", "/c" , env+"adb kill-server");
+		pb.command("cmd.exe", "/c" , env+"adb start-server");
+		
+		try {
+			pb.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void capture(String mainImgPath) {

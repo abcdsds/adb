@@ -23,15 +23,17 @@ public class doQuest extends uitls {
 
 	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
-
-		//doQuest2("adventure");
-		//doQuest2("hotSpa");
-		//doQuest2("dayDungeon");
-		doQuest2("reverse");
+		adbCommand adb = new adbCommand();
+		OpenCvService openCv = new OpenCvService();
+		
+		//doQuest2("adventure",adb,openCv);
+		//doQuest2("hotSpa",adb,openCv);
+		//doQuest2("dayDungeon",adb,openCv); //끝날때 문제있음 던전에서 못나감
+		doQuest2("reverse",adb,openCv); // reversezFight 좌표 잘못됨
 
 	}
 
-	public static void doQuest2(String questNmae) throws InterruptedException {
+	public static void doQuest2(String questNmae, adbCommand adb,OpenCvService openCv) throws InterruptedException {
 
 		// JSONObject ragnarJo = getJsonObject(ragnarFilePath);
 		// System.out.println(ragnarJo.getJSONObject("DesKidRagnarLocationXY").getJSONObject("needTicket").get("1"));
@@ -42,8 +44,6 @@ public class doQuest extends uitls {
 		String questImgPath = defaultPath + dayDungeonJo.getString("defaultImgPath");
 		int quitMapSize = dayDungeonJo.getInt("quitMapSize");
 		File f = new File(questImgPath);
-		OpenCvService openCv = new OpenCvService();
-		adbCommand adb = new adbCommand();
 		boolean checkWhile = true;
 		String tempName = "";
 		String newSaveName = "";
